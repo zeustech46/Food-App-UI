@@ -90,7 +90,7 @@ export default Home = ({navigation}) => {
 
         {/* Categories */}
         <View style={styles.categoriesWrapper}>
-          <Text style={styles.categoriesTitle}>Categories</Text>
+          <Text style={styles.categoriesTitle}>Kategori</Text>
           <View style={styles.categoriesListWrapper}>
             <FlatList
               data={categoriesData}
