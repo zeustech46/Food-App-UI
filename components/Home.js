@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import * as React from 'react';
 import {
   View,
@@ -61,7 +62,8 @@ export default Home = ({navigation}) => {
         <SafeAreaView>
           <View style={styles.headerWrapper}>
             <Image
-              source={require('../assets/images/profile.png')}
+              // source={require('../assets/images/profile.png')}
+              source={{uri: 'https://placeimg.com/40/40/people'}}
               style={styles.profileImage}
             />
             {/* icon */}
@@ -105,14 +107,18 @@ export default Home = ({navigation}) => {
         {/* Popular */}
         <View style={styles.popularWrapper}>
           <Text style={styles.popularTitle}>Popular</Text>
-          {popularData.map(item => (
+          {/* {popularData.map(item => (
             <TouchableOpacity
               key={item.id}
               onPress={() =>
                 navigation.navigate('Details', {
                   item: item,
                 })
-              }>
+              }> */}
+          {popularData.map(item => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => navigation.navigate('Details', {item: item})}>
               <View
                 style={[
                   styles.popularCardWrapper,

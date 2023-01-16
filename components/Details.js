@@ -1,13 +1,14 @@
+/* eslint-disable no-undef */
 import * as React from 'react';
 import {
   View,
   Text,
-  Font,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
   Image,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -23,7 +24,7 @@ export default Details = ({route, navigation}) => {
         style={[
           styles.ingredientsItemWrapper,
           {
-            marginLeft: item.id == '1' ? 20 : 0,
+            marginLeft: item.id === '1' ? 20 : 0,
           },
         ]}>
         <Image source={item.image} style={styles.ingredientsImage} />
@@ -33,77 +34,83 @@ export default Details = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <SafeAreaView>
-        <View style={styles.headerWrapper}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <View style={styles.headerLeft}>
-              <Feather name="chevron-left" size={12} color={colors.textDark} />
+      <ScrollView>
+        {/* Header */}
+        <SafeAreaView>
+          <View style={styles.headerWrapper}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <View style={styles.headerLeft}>
+                <Feather
+                  name="chevron-left"
+                  size={12}
+                  color={colors.textDark}
+                />
+              </View>
+            </TouchableOpacity>
+            <View style={styles.headerRight}>
+              <MaterialCommunityIcons
+                name="star"
+                size={12}
+                color={colors.white}
+              />
             </View>
-          </TouchableOpacity>
-          <View style={styles.headerRight}>
-            <MaterialCommunityIcons
-              name="star"
-              size={12}
-              color={colors.white}
+          </View>
+        </SafeAreaView>
+
+        {/* Title */}
+        <View style={styles.titlesWrapper}>
+          <Text style={styles.title}>{item.title}</Text>
+        </View>
+
+        {/* Price */}
+        <View style={styles.priceWrapper}>
+          <Text style={styles.priceText}>${item.price}</Text>
+        </View>
+
+        {/* Pizza Info */}
+        <View style={styles.infoWrapper}>
+          <View style={styles.infoLeftWrapper}>
+            <View style={styles.infoItemWrapper}>
+              <Text style={styles.infoItemTitle}>Size</Text>
+              <Text style={styles.infoItemText}>
+                {item.sizeName} {item.sizeNumber}"
+              </Text>
+            </View>
+            <View style={styles.infoItemWrapper}>
+              <Text style={styles.infoItemTitle}>Crust</Text>
+              <Text style={styles.infoItemText}>{item.crust}</Text>
+            </View>
+            <View style={styles.infoItemWrapper}>
+              <Text style={styles.infoItemTitle}>Delivery in</Text>
+              <Text style={styles.infoItemText}>{item.deliveryTime} min</Text>
+            </View>
+          </View>
+          <View>
+            <Image source={item.image} style={styles.itemImage} />
+          </View>
+        </View>
+
+        {/* Ingredients */}
+        <View style={styles.ingredientsWrapper}>
+          <Text style={styles.ingredientsTitle}>Ingredients</Text>
+          <View style={styles.ingredientsListWrapper}>
+            <FlatList
+              data={item.ingredients}
+              renderItem={renderIngredientsItem}
+              keyExtractor={item => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
             />
           </View>
         </View>
-      </SafeAreaView>
 
-      {/* Title */}
-      <View style={styles.titlesWrapper}>
-        <Text style={styles.title}>{item.title}</Text>
-      </View>
-
-      {/* Price */}
-      <View style={styles.priceWrapper}>
-        <Text style={styles.priceText}>${item.price}</Text>
-      </View>
-
-      {/* Pizza Info */}
-      <View style={styles.infoWrapper}>
-        <View style={styles.infoLeftWrapper}>
-          <View style={styles.infoItemWrapper}>
-            <Text style={styles.infoItemTitle}>Size</Text>
-            <Text style={styles.infoItemText}>
-              {item.sizeName} {item.sizeNumber}"
-            </Text>
+        {/* Button Order */}
+        <TouchableOpacity onPress={() => alert('You Order Has Been Placed!')}>
+          <View style={styles.buttonOrderWrapper}>
+            <Text style={styles.buttonOrderTitle}> Place an order ></Text>
           </View>
-          <View style={styles.infoItemWrapper}>
-            <Text style={styles.infoItemTitle}>Crust</Text>
-            <Text style={styles.infoItemText}>{item.crust}</Text>
-          </View>
-          <View style={styles.infoItemWrapper}>
-            <Text style={styles.infoItemTitle}>Delivery in</Text>
-            <Text style={styles.infoItemText}>{item.deliveryTime} min</Text>
-          </View>
-        </View>
-        <View>
-          <Image source={item.image} style={styles.itemImage} />
-        </View>
-      </View>
-
-      {/* Ingredients */}
-      <View style={styles.ingredientsWrapper}>
-        <Text style={styles.ingredientsTitle}>Ingredients</Text>
-        <View style={styles.ingredientsListWrapper}>
-          <FlatList
-            data={item.ingredients}
-            renderItem={renderIngredientsItem}
-            keyExtractor={item => item.id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-      </View>
-
-      {/* Button Order */}
-      <TouchableOpacity onPress={() => alert('You Order Has Been Placed!')}>
-        <View style={styles.buttonOrderWrapper}>
-          <Text style={styles.buttonOrderTitle}> Place an order ></Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -153,12 +160,6 @@ const styles = new StyleSheet.create({
     flexDirection: 'row',
     marginTop: 30,
     paddingHorizontal: 20,
-  },
-  infoWrapper: {
-    flexDirection: 'row',
-    marginTop: 30,
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
   infoLeftWrapper: {
     paddingLeft: 20,
@@ -217,6 +218,7 @@ const styles = new StyleSheet.create({
     backgroundColor: colors.primary,
     alignItems: 'center',
     borderRadius: 50,
+    marginBottom: 50,
   },
   buttonOrderTitle: {
     fontFamily: 'Montserrat-Bold',
